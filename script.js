@@ -56,7 +56,7 @@ const enigma = {
   save: {
     handler(){
       if (!enigma.machine.approved) {
-        alert('Há caracteres incompativeis!')
+        alert('Há caracteres incompatíveis!')
         return;
       }
       if (enigma.machine.input === '') {
@@ -71,7 +71,7 @@ const enigma = {
 
       if (!exist[0]) {
         this.push(newItem);
-      } else if(confirm('Deseja remover da lista de salvos?')){
+      } else if(confirm('Deseja remover o item da lista de salvos?')){
         this.remove(exist[1]);
       }
 
