@@ -7,74 +7,132 @@ const deleteBtn = document.querySelector('#delete');
 const enigmaHeaderPrimary = document.querySelector('#enigma--header--primary');
 const enigmaHeaderSecundary = document.querySelector('#enigma--header--secundary');
 const savesItems = document.querySelector('#saves--items');
+const savesContainerBtn = document.querySelector('.saves--header');
 
 const enigma = {
-  machine: {
-    order: 'encrypt', // decrypt, encrypt
-    secret: {
-      'e': 'enter',
-      'i': 'imes',
-      'a': 'ai',
-      'o': 'ober',
-      'u': 'ufat'
-    },
-    approved: true,
-    input: '',
-    output: '',
-    saves: [],
+  order: 'encrypt', // decrypt, encrypt
+  secret: {
+    'e': 'enter',
+    'i': 'imes',
+    'a': 'ai',
+    'o': 'ober',
+    'u': 'ufat'
   },
+  approved: true,
+  input: '',
+  output: '',
+  saves: [],
 
-  handlerMachine: {
-    decrypt(decryptValue) {
-      decryptValue = enigma.machine.input;
+  decrypt(decryptValue) {
+    decryptValue = this.input;
 
-      Object.keys(enigma.machine.secret).map((character) => {
-        decryptValue = decryptValue.replaceAll(enigma.machine.secret[character], character);
-      })
+    Object.keys(this.secret).map((character) => {
+      decryptValue = decryptValue.replaceAll(this.secret[character], character);
+    })
 
-      enigma.value.handler(enigma.machine.input, decryptValue);
-    },
-    encrypt(encryptValue) {
-      encryptValue = enigma.machine.input;
+    enigma.value.handler(this.input, decryptValue);
+  },
+  encrypt(encryptValue) {
+    encryptValue = this.input;
 
-      Object.keys(enigma.machine.secret).map((character) => {
-        encryptValue = encryptValue.replaceAll(character, enigma.machine.secret[character]);
-      })
+    Object.keys(this.secret).map((character) => {
+      encryptValue = encryptValue.replaceAll(character, this.secret[character]);
+    })
 
-      enigma.value.handler(enigma.machine.input, encryptValue);
-    },
-    handler() {
-      if (enigma.machine.order === 'decrypt') {
-        this.decrypt();
-      } else if (enigma.machine.order === 'encrypt') {
-        this.encrypt();
-      }
-
-      enigma.save.verify([enigma.machine.input, enigma.machine.output]);
+    enigma.value.handler(this.input, encryptValue);
+  },
+  handler() {
+    if (this.order === 'decrypt') {
+      this.decrypt();
+    } else if (this.order === 'encrypt') {
+      this.encrypt();
     }
+
+    enigma.save.verify([this.input, this.output]);
   },
+  verify(value) {
+    this.approved = true;
+
+    const textVerify = value.split(' ')
+      .map(word => {
+        const regex = /[^a-z]+/g;
+        const metches = word.match(regex) || [];
+        const approved = metches.length === 0;
+        
+        // mark error
+        if (!approved) {
+          metches?.map((special) => {
+            word = word.replaceAll(special, `<mark>${special}</mark>`);
+          });
+
+          this.approved = false;
+        }
+        
+        return word;
+      })
+      .join(' ');
+    
+    if (!this.approved) {
+      this.value.handler(textVerify, 'Caractere não suportado...');
+      return;
+    }
+
+    console.log(textVerify);
+    this.value.handler(textVerify);
+    this.handler();
+  },
+  changeMachineOrder() {
+    if (!this.approved) {
+      alert('Há pendências a serem resolvidas');
+      return;
+    }
+
+    if (this.order === 'encrypt') {
+      this.order = 'decrypt';
+      enigmaHeaderPrimary.querySelector('h2').textContent = 'Criptografado';
+      enigmaHeaderSecundary.querySelector('h2').textContent = 'Descriptografado';
+      
+    } else if (this.order === 'decrypt') {
+      this.order = 'encrypt';
+      enigmaHeaderPrimary.querySelector('h2').textContent = 'Descriptografado';
+      enigmaHeaderSecundary.querySelector('h2').textContent = 'Criptografado';
+    }
+
+    this.input = this.output;
+    this.output = this.input;
+    this.handler();
+    this.loadMachine();
+  },
+  loadMachine() {
+    output.querySelector('.enigma--machine--content').innerHTML = this.output;
+    input.querySelector('.content').innerHTML = this.input;
+    input.querySelector('textarea').value = this.input
+      .replaceAll('<mark>', '')
+      .replaceAll('</mark>', '');
+  },
+
   save: {
     handler(){
-      if (!enigma.machine.approved) {
+      if (!enigma.approved) {
         alert('Há caracteres incompatíveis!')
         return;
       }
-      if (enigma.machine.input === '') {
+      if (enigma.input === '') {
         return;
       }
 
       const newItem = [
-        enigma.machine.input,
-        enigma.machine.output,
+        enigma.input,
+        enigma.output,
       ]
       const exist = this.verify(newItem);
 
       if (!exist[0]) {
         this.push(newItem);
-      } else if(confirm('Deseja remover o item da lista de salvos?')){
+      } else {
         this.remove(exist[1]);
       }
-
+      
       this.load();
       this.verify(newItem);
     },
@@ -82,7 +140,7 @@ const enigma = {
       let exist = false,
           index;
       
-      enigma.machine.saves
+      enigma.saves
         .some((item, i) => {
           if (item[0] === input && item[1] === output) {
             exist = true;
@@ -99,35 +157,33 @@ const enigma = {
       return [exist, index];
     },
     remove(value) {
-      const current = [
-        enigma.machine.input,
-        enigma.machine.output,
-      ];
+      if(!confirm('Deseja remover o item da lista de salvos?')){
+        return;
+      }
 
-      enigma.machine.saves.splice(value, 1);
+      enigma.saves.splice(value, 1);
       this.load();
-      this.verify(current);
     },
     push(item){
-      enigma.machine.saves.unshift(item);
+      enigma.saves.unshift(item);
     },
     load(){
       savesItems.innerHTML = '';
 
-      enigma.machine.saves
+      enigma.saves
         .map((item, index) => {
           const element = ` <li class="item">
           <div class="saves--item--input">
             <p>${item[0]}</p>
             <div class="saves--item--footer flex">
               <div class="saves--item--footer--primary">
-                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler('${item[0]}', this)">
+                <i id="speaker" class="icon icon--speaker" onclick="speaker.handler('${item[0]}', this)">
                   <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
                   <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
                 </i>
               </div>
               <div class="saves--item--footer--secundary">
-                <i class="icon" onclick="enigma.clipboard('${item[0]}');">
+                <i class="icon" onclick="clipboard('${item[0]}');">
                   <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
                 </i>
               </div>
@@ -140,18 +196,18 @@ const enigma = {
             <p>${item[1]}</p>
             <div class="saves--item--footer flex">
               <div class="saves--item--footer--primary">
-                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler('${item[1]}', this)">
+                <i id="speaker" class="icon icon--speaker" onclick="speaker.handler('${item[1]}', this)">
                   <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
                   <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
                 </i>
               </div>
               <div class="saves--item--footer--secundary">
-                <i class="icon" onclick="enigma.clipboard('${item[1]}');">
-                  <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
-                </i>
                 <i id="save" class="icon icon--star active" onclick="enigma.save.remove(${index})">
                   <img src="./images/star-off.svg" class="off" alt="Salvar resultado"/>
                   <img src="./images/star-on.svg" class="on" alt="Remover da lista de salvos"/>
+                </i>
+                <i class="icon" onclick="clipboard('${item[1]}');">
+                  <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
                 </i>
               </div>
             </div>
@@ -164,120 +220,32 @@ const enigma = {
   },
   value: {
     handler(input, output) {
-      enigma.machine.input = input;
-      output != null ? enigma.machine.output = output : null;
-      enigma.load();
-
+      enigma.input = input;
+      enigma.output = output;
+      enigma.loadMachine();
     },
     delete() {
-      enigma.machine.input = '';
-      enigma.machine.output = '';
-      enigma.load();
-    }
-  },
-  
-  verify(value) {
-    this.machine.approved = true;
-
-    const textVerify = value.split(' ')
-      .map(word => {
-        const regex = /[^a-z]+/g;
-        const metches = word.match(regex) || [];
-        const approved = metches.length === 0;
-        
-        // mark error
-        if (!approved) {
-          metches?.map((special) => {
-            word = word.replaceAll(special, `<mark>${special}</mark>`);
-          });
-
-          this.machine.approved = false;
-        }
-        
-        return word;
-      })
-      .join(' ');
-    
-    if (!this.machine.approved) {
-      this.value.handler(textVerify, 'Caractere não suportado...');
-      return;
-    }
-
-    this.value.handler(textVerify);
-    this.handlerMachine.handler();
-  },
-  changeMachineOrder(input, output) {
-    
-    if (!this.machine.approved) {
-      alert('Há pendencias a serem resolvidas');
-      return;
-    }
-
-    input = this.machine.input;
-    output = this.machine.output;
-
-    if (this.machine.order === 'encrypt') {
-      this.machine.order = 'decrypt';
-      enigmaHeaderPrimary.querySelector('h2').textContent = 'Criptografado';
-      enigmaHeaderSecundary.querySelector('h2').textContent = 'Descriptografado';
-      
-    } else if (this.machine.order === 'decrypt') {
-      this.machine.order = 'encrypt';
-      enigmaHeaderPrimary.querySelector('h2').textContent = 'Descriptografado';
-      enigmaHeaderSecundary.querySelector('h2').textContent = 'Criptografado';
-    }
-
-    this.machine.input = output;
-    this.machine.output = input;
-    this.handlerMachine.handler();
-    this.load();
-  },
-  load() {
-    input.querySelector('.content').innerHTML = this.machine.input;
-    input.querySelector('textarea').value = this.machine.input
-      .replaceAll('<mark>', '')
-      .replaceAll('</mark>', '');
-    output.querySelector('.enigma--machine--content').innerHTML = this.machine.output;
-  },
-  clipboard(value) {
-    console.log(value);
-    navigator.clipboard.writeText(value);
-  },
-  speaker: {
-    active: false,
-    handler(text, element) {
-      if (!this.active) {
-        this.active = true;
-        responsiveVoice.speak(text, 'Brazilian Portuguese Female', {
-          onend: () => {
-            element.classList.remove('active');
-          }
-        });
-        element.classList.add('active');
-      } else {
-        this.active = false;
-        responsiveVoice.cancel();
-        element.classList.remove('active');
-      }
+      enigma.input = '';
+      enigma.output = '';
+      enigma.loadMachine();
     }
   }
 }
 
 input.querySelector('textarea')
   .addEventListener('input', (e) => {
-    const element = e.currentTarget
-    const value = element.value;
+    const value = e.currentTarget.value;
     enigma.verify(value);
   });
-
 reverse.addEventListener('click', () => {
   enigma.changeMachineOrder();
 });
-
 saveBtn.addEventListener('click', () => {
   enigma.save.handler();
-})
-
+});
 deleteBtn.addEventListener('click', () => {
   enigma.value.delete();
-})
+});
+savesContainerBtn.addEventListener('click', () => {
+  document.querySelector('#saves').classList.toggle('active');
+});

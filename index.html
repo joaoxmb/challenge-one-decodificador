@@ -44,13 +44,13 @@
             </div>
             <div class="enigma--machine--footer flex">
               <div class="machine--footer--primary">
-                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler(enigma.machine.input, this)">
+                <i id="speaker" class="icon icon--speaker" onclick="speaker.handler(enigma.input, this)">
                   <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
                   <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
                 </i>
               </div>
               <div class="machine--footer--secundary">
-                <i class="icon" onclick="enigma.clipboard(enigma.machine.input)">
+                <i class="icon" onclick="clipboard(enigma.input)">
                   <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
                 </i>
               </div>
@@ -68,13 +68,13 @@
             </div>
             <div class="enigma--machine--footer flex">
               <div class="machine--footer--primary">
-                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler(enigma.machine.output, this)">
+                <i id="speaker" class="icon icon--speaker" onclick="speaker.handler(enigma.output, this)">
                   <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
                   <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
                 </i>
               </div>
               <div class="machine--footer--secundary">
-                <i class="icon" onclick="enigma.clipboard(enigma.machine.output)">
+                <i class="icon" onclick="clipboard(enigma.output)">
                   <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
                 </i>
               </div>
@@ -88,14 +88,17 @@
           <p>Apenas letras minúsculas e sem acento.</p>
         </div>
       </section>
-      <section id="saves">
+      <section id="saves" class="active">
         <div class="saves--header">
           <h2>Salvos</h2>
-          <i>
+          <i class="icon">
             <img src="./images/section-arrow.svg" alt=""/>
           </i>
         </div>
         <ul id="saves--items">
+          <li class="notfound">
+            <p>Não há nada por aqui...</p>
+          </li>
         </ul>
       </section>
     </div>
@@ -108,6 +111,8 @@
     </div>
   </footer>
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=mzGh0pX5"></script>
+  <script src="./scripts/speaker.js"></script>
+  <script src="./scripts//clipboard.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>

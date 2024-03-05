@@ -16,7 +16,7 @@ html, body {
   max-width: 1380px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 25px;
 }
 
 .flex {
@@ -34,7 +34,7 @@ header .container {
 }
 
 header img {
-  width: 30px;
+  width: 20px;
 }
 
 header h1 {
@@ -49,7 +49,7 @@ header h1 {
 }
 
 #enigma #input {
-  outline: 1px solid #052051;
+  border: 1px solid #d9dbdd;
 }
 #enigma #output {
   background-color: #F3F5FC;
@@ -90,6 +90,7 @@ header h1 {
   padding: 30px 25px;
   gap: 10px;
   color: #495057;
+  font-size: 0.9rem;
 }
 
 #reverse {
@@ -113,6 +114,22 @@ header h1 {
   overflow-wrap: anywhere;
   color: transparent;
   min-height: 250px;
+}
+#input .enigma--machine--textarea .content mark{
+  background: transparent;
+  position: relative;
+}
+#input .enigma--machine--textarea .content mark::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: #f87e90;
+  padding: 0px 1px;
+  border-radius: 3px;
 }
 #input textarea {
   padding: 0;
@@ -156,6 +173,7 @@ header h1 {
   margin-top: 75px;
   background-color: rgba(206, 212, 218, 0.15);
   border-radius: 15px;
+  border: 1px solid #d9dbdd;
 }
 #saves .saves--header {
   display: flex;
@@ -164,24 +182,35 @@ header h1 {
 }
 #saves .saves--header h2 {
   color: #052051;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 500;
 }
 #saves .saves--header i {
   height: 39px;
+  transition: transform .3s;
+}
+#saves.active .saves--header i {
+  transform: rotate(180deg);
 }
 
+#saves.active #saves--items{
+  height: auto;
+}
 #saves--items {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  transition: height .3s;
+  height: 0;
+  list-style: none;
+  overflow: hidden;
 }
 #saves--items .item {
   display: flex;
   gap: 10px;
 }
-#saves--items .item:first-child(){
-  margin-top: 15px;
+#saves--items .item:first-child{
+  margin-top: 25px;
 }
 #saves--items .item > div {
   width: 100%;
@@ -192,10 +221,10 @@ header h1 {
   justify-content: space-between;
 }
 #saves--items .saves--item--input {
-  outline: 1px solid #ADB5BD;
+  border: 1px solid #d9dbdd;
 }
 #saves--items .saves--item--output {
-  background-color: rgba(206, 212, 218, 0.4);
+  background-color: #F3F5FC;
 }
 #saves--items i {
   display: flex;
@@ -216,6 +245,11 @@ header h1 {
   justify-content: end;
 }
 
+#saves--items .notfound p{
+  padding: 25px 0;
+  color: #ADB5BD;
+}
+
 footer {
   padding: 50px 25px;
 }
@@ -231,6 +265,7 @@ i.icon {
   cursor: pointer;
   position: relative;
   user-select: none;
+  display: flex;
 }
 i.icon::after{
   content: '';
@@ -266,39 +301,43 @@ i.icon--star .on {
 }
 
 @media screen and (max-width: 723px) {
-  .enigma--machine {
+  #enigma .enigma--machine {
     gap: 0 !important;
     flex-direction: column;
-    outline: 1px solid #052051;
+    border: 1px solid #d9dbdd;
     border-radius: 15px;
     overflow: hidden;
   }
   #enigma .enigma--machine > div {
     border-radius: 0px;
   }
-  #enigma #input {
-    outline: none;
+  #enigma .enigma--header h2 {
+    border: none;
+    font-size: 0.9rem;
   }
-  #input .enigma--machine--textarea .content {
-    min-height: 100px;
+  #enigma .enigma--header > div:not(#reverse){
+    padding: 0;
+    width: 50%;
+  }
+  #enigma #input {
+    border: none;
   }
   #reverse {
     align-items: center;
   }
-  #enigma .enigma--header h2 {
-    font-size: 1rem;
-  }
   #enigma--header--secundary{
-    padding: 0 25px 0 0 !important;
     display: flex;
     justify-content: end;
+  }
+  #input .enigma--machine--textarea .content {
+    min-height: 100px;
   }
 
   #saves--items .item {
     flex-direction: column;
     gap: 0 !important;
     border-radius: 15px;
-    outline: 1px solid #ADB5BD;
+    border: 1px solid #d9dbdd;
     overflow: hidden;
   }
   #saves--items .item > i {
@@ -306,6 +345,10 @@ i.icon--star .on {
   }
   #saves--items .item > div {
     border-radius: 0;
-    outline: none;
+    border: none;
+  }
+
+  i.icon {
+    transform: scale(0.9);
   }
 }
