@@ -7,7 +7,107 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  
-  <script type="module" src="./script.js"></script>
+  <header>
+    <div class="container flex">
+      <img src="./images/alura.svg" alt="Alura logo marca"/>
+      <h1>decodificar</h1>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <section id="enigma">
+        <div class="enigma--header flex">
+          <div id="enigma--header--primary">
+            <h2>Descriptografado</h2>
+          </div>
+          <div id="reverse">
+            <i class="icon">
+              <img src="./images/revert.svg" alt="Reverter"/>
+            </i>
+          </div>
+          <div id="enigma--header--secundary">
+            <h2>Criptografado</h2>
+          </div>
+        </div>
+        <div class="enigma--machine">
+          <div id="input">
+            <div class="flex">
+              <div class="enigma--machine--textarea">
+                <p class="content"></p>
+                <textarea name="input" id="text-input"></textarea>
+              </div>
+              <div class="enigma--machine--aside">
+                <i id="delete" class="icon">
+                  <img src="./images/delete.svg" alt="Deletar texto"/>
+                </i>
+              </div>
+            </div>
+            <div class="enigma--machine--footer flex">
+              <div class="machine--footer--primary">
+                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler(enigma.machine.input, this)">
+                  <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
+                  <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
+                </i>
+              </div>
+              <div class="machine--footer--secundary">
+                <i class="icon" onclick="enigma.clipboard(enigma.machine.input)">
+                  <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
+                </i>
+              </div>
+            </div>
+          </div>
+          <div id="output">
+            <div class="flex">
+              <p class="enigma--machine--content"></p>
+              <div class="enigma--machine--aside">
+                <i id="save" class="icon icon--star">
+                  <img src="./images/star-off.svg" class="off" alt="Salvar resultado"/>
+                  <img src="./images/star-on.svg" class="on" alt="Remover da lista de salvos"/>
+                </i>
+              </div>
+            </div>
+            <div class="enigma--machine--footer flex">
+              <div class="machine--footer--primary">
+                <i id="speaker" class="icon icon--speaker" onclick="enigma.speaker.handler(enigma.machine.output, this)">
+                  <img src="./images/speaker-off.svg" class="off" alt="Ler texto"/>
+                  <img src="./images/speaker-on.svg" class="on" alt="Para leitura"/>
+                </i>
+              </div>
+              <div class="machine--footer--secundary">
+                <i class="icon" onclick="enigma.clipboard(enigma.machine.output)">
+                  <img src="./images/copy.svg" alt="Copiar resultado para área de trabalho"/> 
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="warning flex">
+          <i class="icon">
+            <img src="./images/warning.svg" alt="aviso">
+          </i>
+          <p>Apenas letras minúsculas e sem acento.</p>
+        </div>
+      </section>
+      <section id="saves">
+        <div class="saves--header">
+          <h2>Salvos</h2>
+          <i>
+            <img src="./images/section-arrow.svg" alt=""/>
+          </i>
+        </div>
+        <ul id="saves--items">
+        </ul>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>
+        Challenge One - Created by <a href="https://github.com/joaoxmb/" target="_blank">@joaoxmb</a>
+      </p>
+    </div>
+  </footer>
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=mzGh0pX5"></script>
+  <script src="./script.js"></script>
 </body>
 </html>

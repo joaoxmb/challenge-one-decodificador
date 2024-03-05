@@ -1,1 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.container {
+  max-width: 1380px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.flex {
+  display: flex;
+}
+
+header {
+  border-bottom: 1px solid #052051;
+  padding: 15px 0;
+}
+
+header .container {
+  align-items: center;
+  gap: 5px;
+}
+
+header img {
+  width: 30px;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #052051;
+}
+
+
+#enigma {
+  margin-top: 75px;
+}
+
+#enigma #input {
+  outline: 1px solid #052051;
+}
+#enigma #output {
+  background-color: #F3F5FC;
+}
+
+#enigma .enigma--machine {
+  display: flex;
+  gap: 15px;
+}
+#enigma .enigma--machine > div {
+  border-radius: 15px;
+  padding: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#enigma .enigma--header {
+  user-select: none;
+  width: 100%;
+  justify-content: space-between;
+}
+#enigma .enigma--header > div:not(#reverse) {
+  width: 100%;
+  padding: 0 0 0 25px;
+}
+#enigma .enigma--header h2 {
+  padding: 15px 10px;
+  border-bottom: 2px solid #052051;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: inherit;
+  width: fit-content;
+}
+#enigma .warning {
+  user-select: none;
+  padding: 30px 25px;
+  gap: 10px;
+  color: #495057;
+}
+
+#reverse {
+  width: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#enigma .enigma--machine--content {
+  width: 100%;
+  margin: 0 15px 0 0;
+  overflow-wrap: anywhere;
+}
+
+#input .enigma--machine--textarea {
+  position: relative;
+  width: 100%;
+  margin: 0 15px 0 0;
+}
+#input .enigma--machine--textarea .content {
+  overflow-wrap: anywhere;
+  color: transparent;
+  min-height: 250px;
+}
+#input textarea {
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+}
+
+#enigma .enigma--machine--footer {
+  margin-top: 15px;
+}
+#enigma .enigma--machine--aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+#enigma .enigma--machine--footer > div {
+  width: 100%;
+}
+#enigma .machine--footer--primary {
+  display: flex;
+  justify-content: start;
+}
+#enigma .machine--footer--secundary {
+  display: flex;
+  justify-content: end;
+}
+
+#saves {
+  padding: 25px;
+  margin-top: 75px;
+  background-color: rgba(206, 212, 218, 0.15);
+  border-radius: 15px;
+}
+#saves .saves--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#saves .saves--header h2 {
+  color: #052051;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+#saves .saves--header i {
+  height: 39px;
+}
+
+#saves--items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+#saves--items .item {
+  display: flex;
+  gap: 10px;
+}
+#saves--items .item:first-child(){
+  margin-top: 15px;
+}
+#saves--items .item > div {
+  width: 100%;
+  border-radius: 15px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#saves--items .saves--item--input {
+  outline: 1px solid #ADB5BD;
+}
+#saves--items .saves--item--output {
+  background-color: rgba(206, 212, 218, 0.4);
+}
+#saves--items i {
+  display: flex;
+  align-items: center;
+}
+#saves--items .saves--item--footer {
+  margin-top: 15px;
+}
+#saves--items .saves--item--footer > div {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+#saves--items .saves--item--footer .saves--item--footer--primary {
+  justify-content: start;
+}
+#saves--items .saves--item--footer .saves--item--footer--secundary {
+  justify-content: end;
+}
+
+footer {
+  padding: 50px 25px;
+}
+footer p {
+  color: #ADB5BD;
+  text-align: center;
+}
+footer a{
+  color: #609ED4;
+}
+
+i.icon {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+i.icon::after{
+  content: '';
+  width: 45px;
+  height: 45px;
+  background-color: #F3F5FC;
+  position: absolute;
+  border-radius: 100px;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+i.icon:hover::after {
+  opacity: 1;
+}
+
+i.active .off {
+  display: none;
+}
+i.active .on {
+  display: block !important;
+}
+
+i.icon--speaker .on {
+  display: none;
+}
+
+i.icon--star .on {
+  display: none;
+}
+
+@media screen and (max-width: 723px) {
+  .enigma--machine {
+    gap: 0 !important;
+    flex-direction: column;
+    outline: 1px solid #052051;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  #enigma .enigma--machine > div {
+    border-radius: 0px;
+  }
+  #enigma #input {
+    outline: none;
+  }
+  #input .enigma--machine--textarea .content {
+    min-height: 100px;
+  }
+  #reverse {
+    align-items: center;
+  }
+  #enigma .enigma--header h2 {
+    font-size: 1rem;
+  }
+  #enigma--header--secundary{
+    padding: 0 25px 0 0 !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  #saves--items .item {
+    flex-direction: column;
+    gap: 0 !important;
+    border-radius: 15px;
+    outline: 1px solid #ADB5BD;
+    overflow: hidden;
+  }
+  #saves--items .item > i {
+    display: none;
+  }
+  #saves--items .item > div {
+    border-radius: 0;
+    outline: none;
+  }
+}
